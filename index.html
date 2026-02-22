@@ -52,7 +52,7 @@
                 </div>
 
                 <div class="num-value-wrapper">
-                    <input class="num-value" type="number" name="our-price" id="our-price" aria-live="polite" readonly>
+                    <input class="num-value" type="text" name="our-price" id="our-price" aria-live="polite" readonly>
                     <span class="input-action material-symbols-outlined" role="button" aria-label="clear" id="copy-output">content_copy</span>
                 </div>
             </div>
@@ -263,6 +263,7 @@
             copyButton.style.display = 'inline-block';
         }
 
+        let lastInteractionType = null;
         window.addEventListener('pointerdown', (e) => {
             lastInteractionType = e.pointerType;
         });
@@ -331,3 +332,4 @@
 </body>
 
 </html>
+
