@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=backspace,content_copy" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=backspace,check,content_copy" />
     <title>Supermarket Together Pricing Calculator</title>
 </head>
 <body>
@@ -24,7 +24,7 @@
                     <label for="market-price">Purchase Price</label>
                 </h2>                
                 <div class="num-value-wrapper">
-                    <input class="num-value" type="text" inputmode="decimal" name="market-price" id="market-price" step="0.01" placeholder="1.99">
+                    <input class="num-value" type="text" inputmode="decimal" name="market-price" id="market-price" placeholder="1.99">
                     <span class="input-action material-symbols-outlined" role="button" aria-label="clear" id="clear-input">backspace</span>
                 </div>
             </div>
@@ -162,7 +162,7 @@
             transform: translateY(-50%) scale(1);
             user-select: none;
             cursor: pointer;
-            transition: transform 0.1s;
+            transition: transform 0.15s ease, color 0.15s ease;
         }
 
         .input-action:active {
@@ -173,10 +173,14 @@
             display: none;
         }
 
+        .input-action.copied {
+            transform: translateY(-50%) scale(1.2);
+            color: var(--chip-active);
+        }
+
         .num-value {
             background-color: var(--input-bg);
             padding: calc(var(--pad)/1.25);
-            -moz-appearance: textfield;
             border-radius: 1rem;
             font-size: 1.25rem;
             text-align: center;
@@ -189,12 +193,6 @@
 
         input:focus {
             outline: none;
-        }
-
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
         }
 
         .chip-select {
@@ -255,7 +253,7 @@
     <script>
         const input = document.getElementById('market-price')
         const output = document.getElementById('our-price')
-        const selContainter = document.querySelector('.chip-select');
+        const selContainer = document.querySelector('.chip-select');
         const clearButton = document.getElementById('clear-input')
         const copyButton = document.getElementById('copy-output')
 
@@ -272,7 +270,7 @@
             lastInteractionType = "keyboard";
         });
 
-        selContainter.addEventListener('change', (e) => {
+        selContainer.addEventListener('change', (e) => {
             update_calc();
 
             console.log(e.detail)
@@ -292,7 +290,15 @@
         copyButton.addEventListener('click', (e) => {
             const textToCopy = output.value;
 
-            navigator.clipboard.writeText(textToCopy);
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                copyButton.textContent = "check";
+                copyButton.classList.add("copied");
+            });
+
+            setTimeout(() => {
+                copyButton.textContent = "content_copy";                
+                copyButton.classList.remove("copied");
+            }, 1500);
         })
 
         update_calc()
