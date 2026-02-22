@@ -4,69 +4,329 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex nofollow">
-    <title>Super Market Together Preis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=backspace,content_copy" />
+    <title>Supermarket Together Pricing Calculator</title>
 </head>
 <body>
-    <div class="row market-price">
-        <label for="market-price">Markt Preis</label>
-        <input type="number" name="market-price" id="market-price" step="0.01">
-    </div>
-    <div class="row our-price">
-        <label for="our-price">Unser Preis</label>
-        <input type="number" name="our-price" id="our-price" disabled>
-    </div>
+    <main>
+        <div class="title">
+            <h1 class="title-text">
+                Supermarket Together Pricing Calculator
+            </h1>
+        </div>
+
+        <div class="calculator">
+            <div class="card">
+                <h2>
+                    <label for="market-price">Purchase Price</label>
+                </h2>                
+                <div class="num-value-wrapper">
+                    <input class="num-value" type="text" inputmode="decimal" name="market-price" id="market-price" step="0.01" placeholder="1.99">
+                    <span class="input-action material-symbols-outlined" role="button" aria-label="clear" id="clear-input">backspace</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>
+                    <label for="our-price">Sale Price</label>
+                </h2>
+                
+                <div class="chip-select">
+                    <label class="chip" for="multi-1-9">
+                        <input type="radio" name="multi" id="multi-1-9" checked>
+                        <span>1.9x</span>
+                    </label>
+                    
+                     <label class="chip" for="multi-2">
+                        <input type="radio" name="multi" id="multi-2">
+                        <span>2x</span>
+                    </label>
+                    
+                     <label class="chip" for="multi-2-round">
+                        <input type="radio" name="multi" id="multi-2-round">
+                        <span>2x (round)</span>
+                    </label>
+                </div>
+
+                <div class="num-value-wrapper">
+                    <input class="num-value" type="number" name="our-price" id="our-price" aria-live="polite" readonly>
+                    <span class="input-action material-symbols-outlined" role="button" aria-label="clear" id="copy-output">content_copy</span>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <style>
+        :root {
+            --background: #100215;
+            --text: #f4defb;
+            --card: #1a0820;
+            --input-bg: #371b41;
+            --chip-active: #d47ff1;
+            --chip-inactive: #400836;
+            --pad: 1.5rem
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+
         * {
             box-sizing: border-box;
         }
 
-        body {
-            height: 50vh;
-            font-family: sans-serif;
-            background-color: #121214;
-            color: #d9d9da;
+        *::selection {
+            background-color: var(--chip-active);
+            color: var(--background);
+        }
+
+        body {            
+            font-family: "IBM Plex Mono", monospace;
+            background-color: var(--background);
+            width: min(560px, 100%);
+            margin: var(--pad) auto;
+            padding: var(--pad);
+            color: var(--text);
+        }
+
+        main {
+            width: 100%;
             display: flex;
             flex-direction: column;
+            gap: var(--pad);
+        }
+
+        h1 {
+            font-family: "Orbitron", sans-serif;
+            margin: 0;            
+            user-select: none;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .title {
+            text-align: center;
+        }
+
+        .calculator {
             justify-content: center;
+            flex-direction: column;
+            display: flex;
             gap: 3rem;
         }
 
-        label {
-            font-size: 24px;
-            font-weight: 500;
-        }
-
-        .row {
-            display: flex;
-            align-items: center;
+        .card {
+            border-radius: var(--pad);
+            background-color: var(--card);
             flex-direction: column;
-            gap: 1rem;
+            align-items: center;
+            padding: var(--pad);
+            gap: var(--pad);
+            display: flex;
         }
 
-        input {
-            padding: 1rem;
-            border: none;
-            width: 75%;
+        .num-value-wrapper {
+            width: 100%;
+            position: relative;
+        }
+
+        .num-value-wrapper::after {
+            left: calc(var(--pad)/1.25);
+            transform: translateY(-50%);
+            font: inherit;            
+            color: var(--chip-active);
+            font-size: 1.25rem;
+            position: absolute;
+            display: inline;
+            opacity: 0.75;
+            content: "$";
+            top: 50%;
+        }
+
+        .input-action {
+            position: absolute;
+            right: calc(var(--pad)/1.25);
+            top: 50%;
+            transform: translateY(-50%) scale(1);
+            user-select: none;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .input-action:active {
+            transform: translateY(-50%) scale(0.85);
+        }
+
+        .input-action#copy-output {
+            display: none;
+        }
+
+        .num-value {
+            background-color: var(--input-bg);
+            padding: calc(var(--pad)/1.25);
+            -moz-appearance: textfield;
             border-radius: 1rem;
-            background-color: #1a1a1e;
+            font-size: 1.25rem;
+            text-align: center;
+            font-weight: 500;
             color: inherit;
+            font: inherit;
+            border: none;
+            width: 100%;
         }
 
         input:focus {
             outline: none;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        .chip-select {
+            display: flex;           
+            flex-direction: row;          
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--pad);
+        }
+
+        .chip-select input[type=radio]{
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        .chip {
+            background-color: var(--chip-inactive);
+            border-radius: 1rem;
+            padding: calc(var(--pad)/2) calc(var(--pad)*1.5);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background-color 0.2s, color 0.2s, transform 0.1s;
+        }
+
+        .chip:active {
+            transform: scale(0.95);
+        }
+
+        .chip:has(input:focus-visible) {
+            outline: 2px solid var(--chip-active);
+            outline-offset: 4px;
+        }
+
+        .chip:has(input[type="radio"]:checked) {
+            background-color: var(--chip-active);
+            color: var(--background);
+            font-weight: 700;
+        }
+
+        @keyframes pulse {
+            0% { transform: scaleX(1) scaleY(1); }
+            50% { transform: scaleX(1.01) scaleY(1.05); }
+            100% { transform: scaleX(1) scaleY(1) }
+        }
+        
+        .updated {
+            animation: pulse 0.2s ease-in-out;
         }
     </style>
 
     <script>
         const input = document.getElementById('market-price')
         const output = document.getElementById('our-price')
+        const selContainter = document.querySelector('.chip-select');
+        const clearButton = document.getElementById('clear-input')
+        const copyButton = document.getElementById('copy-output')
 
-        input.addEventListener('input', (e) => {
-            const new_value = event.target.value * 2 * 0.95
-            console.log(new_value)
-            output.value = Math.round(new_value * 100) / 100
+        if (window.isSecureContext) {
+            copyButton.style.display = 'inline-block';
+        }
+
+        window.addEventListener('pointerdown', (e) => {
+            lastInteractionType = e.pointerType;
+        });
+
+        window.addEventListener('keydown', () => {
+            lastInteractionType = "keyboard";
+        });
+
+        selContainter.addEventListener('change', (e) => {
+            update_calc();
+
+            console.log(e.detail)
+
+            if (lastInteractionType === 'touch' || lastInteractionType === 'mouse' || lastInteractionType === 'pen') {
+                input.focus({ preventScroll: true });
+            }
         })
+        input.addEventListener('input', (e) => update_calc())
+
+        clearButton.addEventListener('click', (e) => {
+            input.value = '';
+            input.focus();
+            update_calc();
+        })
+
+        copyButton.addEventListener('click', (e) => {
+            const textToCopy = output.value;
+
+            navigator.clipboard.writeText(textToCopy);
+        })
+
+        update_calc()
+
+        function update_calc() {
+            let cleanInput = input.value.replaceAll(',', '.')
+                                        .replace(/[^\d.]/g, '')
+                                        .replace(/(\..*?)\..*/g, '$1');
+            const purchasePrice = parseFloat(cleanInput);
+
+            if (isNaN(purchasePrice) || purchasePrice === 0) {
+                output.value = '0.00';
+                return;
+            }
+
+            const selectedRadio = document.querySelector('.chip-select input[name="multi"]:checked');
+            let salePrice = 0.0;
+
+            switch (selectedRadio.id) {
+                case 'multi-1-9':
+                    salePrice = purchasePrice * 1.9; // 2 * 0.95
+                    break;
+                case 'multi-2':
+                    salePrice = purchasePrice * 2;
+                    break;
+                case 'multi-2-round':
+                    salePrice = Math.floor(purchasePrice * 2 * 10) / 10;
+                    break;
+            }
+
+            output.value = salePrice.toFixed(2);
+            output.classList.remove('updated');
+            void output.offsetWidth;
+            output.classList.add('updated');
+        }
     </script>
 </body>
 
